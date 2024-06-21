@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.poscodx.jblog.service.BlogService;
+import com.poscodx.jblog.service.UserService;
 import com.poscodx.jblog.vo.BlogVo;
 import com.poscodx.jblog.vo.CategoryVo;
 import com.poscodx.jblog.vo.PostVo;
+import com.poscodx.jblog.vo.UserVo;
 
 @Controller
 // assets를 제외한 모든 문자
@@ -22,6 +24,9 @@ public class BlogController {
 	
 	@Autowired
 	private BlogService blogService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping({"","/{pathNo1}","/{pathNo1}/{pathNo2}"})
 	public String index(
@@ -42,7 +47,13 @@ public class BlogController {
 			categoryNo = pathNo1.get();
 		}
 		
+		UserVo userVo = userService.getUser(id);
+		if(userVo==null) {
+			return "redirect:/";
+		}
+		
 		System.out.println("Controller ::::::categoryNo::::::  "+categoryNo+"   postNo:::::"+postNo);
+		
 		// 기본카테고리 기본글로 이동
 		if (categoryNo==0 && postNo==0) {
 			postList = blogService.getDefault(id);
@@ -52,8 +63,9 @@ public class BlogController {
 			}
 		} else if(categoryNo!=0 && postNo==0) {
 			postList = blogService.getPostsByCategory(categoryNo, id);
-			List<CategoryVo> category = blogService.getCategory(id);
-			if(category.size()!=0 && postList.size()==0) {
+			CategoryVo category = blogService.findCategory(id,categoryNo);
+			System.out.println("category가 있지만 블로그에 없을때:::"+category);
+			if(category!=null && postList.size()==0) {
 				BlogVo blogVo = blogService.getBlogVo(id);
 				List<CategoryVo> categoryList = blogService.getCategory(id);
 				model.addAttribute("blogVo",blogVo);

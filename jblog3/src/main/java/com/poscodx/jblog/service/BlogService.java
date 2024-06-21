@@ -2,6 +2,7 @@ package com.poscodx.jblog.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,10 @@ public class BlogService {
 
 	public List<CategoryVo> getCategory(String id) {
 		return blogRepository.getCategory(id);
+	}
+	
+	public CategoryVo findCategory(String id,int no) {
+		return blogRepository.findCategory(id, no);
 	}
 
 	@Transactional

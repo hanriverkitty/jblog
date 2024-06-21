@@ -29,6 +29,10 @@ public class BlogRepository {
 		return sqlSession.selectList("blog.getPostByCategory",Map.of("no",no,"id",id));
 	}
 	
+	public CategoryVo findCategory(String id,int no) {
+		return sqlSession.selectOne("blog.findCategory",Map.of("id",id,"no",no));
+	}
+	
 	// 카테고리와 글번호로 글 가져오기
 	public PostVo getPostByNoAndCategory(int no, int categoryNo,String id) {
 		return sqlSession.selectOne("blog.getPostByNoAndCategory",Map.of("no",no,"categoryNo",categoryNo,"id",id));
