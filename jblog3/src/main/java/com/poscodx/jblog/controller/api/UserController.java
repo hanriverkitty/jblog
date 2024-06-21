@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.poscodx.jblog.dto.JsonResult;
 import com.poscodx.jblog.service.UserService;
 import com.poscodx.jblog.vo.UserVo;
 
@@ -16,9 +17,10 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-//	@GetMapping("/checkemail")
-//	public JsonResult checkEmail(@RequestParam(value="email", required=true, defaultValue="") String email) {
-//		UserVo vo = userService.getUser(email);
-//		return JsonResult.success(vo != null); 
-//	}
+	@GetMapping("/checkid")
+	public JsonResult checkEmail(@RequestParam(value="id", required=true, defaultValue="") String id) {
+		UserVo vo = userService.getUser(id);
+		System.out.println(vo);
+		return JsonResult.success(vo != null); 
+	}
 }

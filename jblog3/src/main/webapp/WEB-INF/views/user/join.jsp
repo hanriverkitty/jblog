@@ -11,17 +11,18 @@
 <title>JBlog</title>
 <Link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
 <script src="${pageContext.request.contextPath}/assets/js/jquery/jquery-1.9.0.js"></script>
-<!-- 
+
 <script>
 
 $(function() {
 	$("#btn-check").click(function() {
-		var email = $("#email").val();
-		if(email==''){
+		var id = $("#id").val();
+		console.log(id);
+		if(id==''){
 			return;
 		}
 		$.ajax({
-			url:"/mysite3/user/api/checkemail?email="+email,
+			url:"/jblog3/user/api/checkid?id="+id,
 			type:"get",
 			dataType:"json",
 			error:function(xhr,status,error){
@@ -33,9 +34,9 @@ $(function() {
 					return;
 				}
 				if(response.data){
-					alert("존재하는 이메일입니다. 다른 이메일을 사용해 주세요.");
-					$("#email").val("");
-					$("#email").focus();
+					alert("존재하는 아이디입니다. 다른 아이디를 사용해 주세요.");
+					$("#id").val("");
+					$("#id").focus();
 					return;
 				}
 				
@@ -47,16 +48,20 @@ $(function() {
 	})
 });
 </script>
- -->
+
 </head>
 <body>
 	<div class="center-content">
 		<h1 class="logo">JBlog</h1>
 		<ul class="menu">
-			<li><a href="">로그인</a></li>
-			<li><a href="">회원가입</a></li>
-			<li><a href="">로그아웃</a></li>
-			<li><a href="">내블로그</a></li>
+			<c:if test='${empty authUser }'>
+			<li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
+			<li><a href="${pageContext.request.contextPath}/user/join">회원가입</a></li>
+			</c:if>
+			<c:if test='${!empty authUser }'>
+				<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
+				<li><a href="${pageContext.request.contextPath}/${authUser.id}">내블로그</a></li>
+			</c:if>
 		</ul>
 		<form:form
 			modelAttribute="userVo"
@@ -69,8 +74,8 @@ $(function() {
 			
 			<label class="block-label" for="blog-id">아이디</label>
 			<form:input path="id"/> 
-			<input id="btn-checkemail" type="button" value="id 중복체크">
-			<img id="img-checkemail" style="display: none;" src="${pageContext.request.contextPath}/assets/images/check.png">
+			<input id="btn-check" type="button" value="id 중복체크">
+			<img id="img-check" style="display: none;" src="${pageContext.request.contextPath}/assets/images/check.png">
 
 			<label class="block-label" for="password">패스워드</label>
 			<form:password path="password" />

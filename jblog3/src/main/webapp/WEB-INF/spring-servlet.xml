@@ -34,10 +34,35 @@
 				</property>
 			</bean>
 		</mvc:message-converters>
+		
+		<!-- Argument Resolver 등록 -->
+		<mvc:argument-resolvers>
+			<bean
+				class="com.poscodx.jblog.security.AuthUserHandlerMethodArgumentResolver" />
+		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
 
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
 	<mvc:default-servlet-handler />
+
+<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/auth" />
+			<bean class="com.poscodx.jblog.security.LoginInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/logout" />
+			<bean class="com.poscodx.jblog.security.LogoutInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/user/auth" />
+			<mvc:exclude-mapping path="/user/logout" />
+			<mvc:exclude-mapping path="/assets/**" />
+			<bean class="com.poscodx.jblog.security.AuthInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 	<!-- View Resolver -->
 	<bean id="viewResolver"
@@ -47,20 +72,6 @@
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-
-	<!-- 6. MessageSource -->
-	<!--  
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basenames">
-			<list>
-				<value>messages/messages_ko</value>
-				<value>messages/messages_en</value>
-			</list>
-		</property>
-	</bean>
-	-->
-	
 
 	<!-- mvc url-resource mapping -->
 	<mvc:resources mapping="/assets/upload-images/**"

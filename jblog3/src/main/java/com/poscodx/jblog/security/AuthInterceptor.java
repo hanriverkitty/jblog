@@ -52,7 +52,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		}
 		
 		//7. 권한(Authorization) 체크를 위해 @Auth의 role 가져오기("USER", "ADMIN")
-		String role = auth.role();
+//		String role = auth.role();
 		
 //		//8. @AUTH role이 "USER"인 경우, authUser의 role은 상관없다.
 //		if("USER".equals(role)) {
@@ -67,5 +67,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 //		
 //		//10. 옳은 관리자 권한 @Auth(role="ADMIN"), authUser.getRole() == "ADMIN" 
 //		return true;
+		return true;
 	}
 }
