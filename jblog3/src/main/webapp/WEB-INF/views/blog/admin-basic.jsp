@@ -8,15 +8,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JBlog</title>
 <Link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
+<script>
+        function previewImage() {
+            const fileInput = document.getElementById('file');
+            const logoImage = document.getElementById('logo');
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                logoImage.src = e.target.result;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 </head>
 <body>
 	<div id="container">
 		<div id="header">
 			<h1>Spring 이야기</h1>
 			<ul>
-				<li><a href="">로그인</a></li>
-				<li><a href="">로그아웃</a></li>
+				<c:if test = "${empty authUser }">
+					<li><a href="${pageContext.request.contextPath}/user/login">로그인</a></li>
+				</c:if>
+				<c:if test = "${!empty authUser }">
+					<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
+				</c:if>
+				<c:if test = "${authUser.id == id }">
 				<li><a href="">블로그 관리</a></li>
+				</c:if>
 			</ul>
 		</div>
 		<div id="wrapper">
@@ -26,19 +49,19 @@
 					<li><a href="">카테고리</a></li>
 					<li><a href="">글작성</a></li>
 				</ul>
-				<form action="" method="post">
+				<form action="${pageContext.request.contextPath}/${id }/admin/basic" method="post" enctype="multipart/form-data">
 	 		      	<table class="admin-config">
 			      		<tr>
 			      			<td class="t">블로그 제목</td>
-			      			<td><input type="text" size="40" name="title"></td>
+			      			<td><input type="text" size="40" name="title" value='${blogVo.title }'></td>
 			      		</tr>
 			      		<tr>
 			      			<td class="t">로고이미지</td>
-			      			<td><img src="${pageContext.request.contextPath}/assets/images/spring-logo.jpg"></td>      			
+			      			<td><img id='logo' src="${pageContext.request.contextPath}${blogVo.logo}"></td>      			
 			      		</tr>      		
 			      		<tr>
 			      			<td class="t">&nbsp;</td>
-			      			<td><input type="file" name="logo-file"></td>      			
+			      			<td><input id='file' type="file" name="file" onchange="previewImage()"></td>      			
 			      		</tr>           		
 			      		<tr>
 			      			<td class="t">&nbsp;</td>
@@ -50,7 +73,7 @@
 		</div>
 		<div id="footer">
 			<p>
-				<strong>Spring 이야기</strong> is powered by JBlog (c)2016
+				<strong>Spring 이야기</strong> is powered by JBlog (c)2024
 			</p>
 		</div>
 	</div>

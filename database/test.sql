@@ -14,6 +14,7 @@ insert into blog values("hi","spring 이야기", "이미지경로");
 SELECT * FROM blog;
 update blog set title="안녕하세요", logo="" where id="hi";
 select * from blog where id = "hi";
+update blog set title="하위", logo="이미지경로" where id="123";
 
 -- category --
 insert into category values(null,"4","1",current_date(),"hi");
@@ -23,7 +24,7 @@ select * from category;
 
 -- post --
 select * from post;
-select * from post where category_no=1 and no=2;
+select * from post where category_no=4;
 desc post;
 alter table post modify no int not null auto_increment;
 insert into post values(null,"타이틀4","글4",curdate(),5);

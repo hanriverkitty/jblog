@@ -46,4 +46,8 @@ public class BlogRepository {
 	public List<PostVo> getPostsExceptNo(int no, int categoryNo, String id) {
 		return sqlSession.selectList("blog.getPostsExceptNo",Map.of("no",no,"categoryNo",categoryNo,"id",id));
 	}
+
+	public int changeBlogVo(BlogVo blogVo) {
+		return sqlSession.update("blog.changeBlogVo",blogVo);
+	}
 }

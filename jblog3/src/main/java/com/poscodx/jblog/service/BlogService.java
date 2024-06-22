@@ -60,5 +60,9 @@ public class BlogService {
 			postList.addAll(postListExceptOne);
 		}
 		return postList;
+	}
+
+	public void changeBlogVo(BlogVo blogVo) {
+		blogRepository.changeBlogVo(blogVo);
 	} 
 }

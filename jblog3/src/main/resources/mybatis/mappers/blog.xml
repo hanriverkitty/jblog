@@ -53,4 +53,11 @@
 			where b.id = #{id} and b.no = a.category_no and b.no= #{categoryNo} and a.no != #{no} order by no desc
 		]]>
 	</select>
+	
+	<update id='changeBlogVo' parameterType='blogvo'>
+		<![CDATA[
+			update blog set title=#{title}, logo=#{logo} where id=#{id}
+		]]>
+	</update>
+	
 </mapper>
