@@ -68,6 +68,13 @@ public class BlogController {
 			if(postList.size()!=0) {
 			categoryNo = postList.get(0).getCategoryNo();
 			postNo = postList.get(0).getNo();
+			}else {
+				BlogVo blogVo = blogService.getBlogVo(id);
+				List<CategoryVo> categoryList = blogService.getCategory(id);
+				model.addAttribute("blogVo",blogVo);
+				model.addAttribute("categoryList",categoryList);
+				model.addAttribute("postList",postList);
+				return "blog/main";
 			}
 		} else if(categoryNo!=0 && postNo==0) {
 			postList = blogService.getPostsByCategory(categoryNo, id);
@@ -121,10 +128,38 @@ public class BlogController {
 	}
 	
 	// @Auth
-	@RequestMapping("/admin/category")
-	public String adminCategory(@PathVariable("id")String id) {
+	@RequestMapping(value="/admin/category",method=RequestMethod.GET)
+	public String adminCategory(@PathVariable("id")String id,Model model) {
+		List<CategoryVo> categoryList = blogService.getCategory(id);
+		List<Integer> countPostList = new ArrayList<>();
+		
+		for (CategoryVo vo : categoryList) {
+			int count=0;
+			count = blogService.getCountPostsByCategoryNo(vo.getNo());
+			countPostList.add(count);
+			System.out.println("categoryId::::"+vo.getNo()+"  "+"count::::::::::"+count);
+		}
+		
+		model.addAttribute("categoryList",categoryList);
+		model.addAttribute("countPostList",countPostList);
 		return "blog/admin-category";
 	}
+	
+	// @Auth
+	@RequestMapping(value="/admin/category",method=RequestMethod.POST)
+	public String adminCategory(@PathVariable("id")String id, CategoryVo categoryVo) {
+		System.out.println(categoryVo);
+		blogService.insertCategory(categoryVo);
+		return "redirect:/"+id+"/admin/category";
+	}
+	
+	@RequestMapping("/admin/category/delete")
+	public String deleteCategory(@PathVariable("id")String id, @RequestParam(value="categoryNo") int no) {
+		System.out.println("categoryNo::::"+no+"삭제");
+		blogService.deleteCategory(no);
+		return "redirect:/"+id+"/admin/category";
+	}
+		
 	// @Auth
 	@RequestMapping(value="/admin/write", method=RequestMethod.GET)
 	public String adminWrite(@PathVariable("id")String id, Model model) {
@@ -132,6 +167,7 @@ public class BlogController {
 		model.addAttribute("categoryList",categoryList);
 		return "blog/admin-write";
 	}
+	
 	@RequestMapping(value="/admin/write", method=RequestMethod.POST)
 	public String adminWrite(@PathVariable("id")String id, PostVo vo) {
 		System.out.println(vo);

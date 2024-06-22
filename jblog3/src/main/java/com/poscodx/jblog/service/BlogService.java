@@ -68,5 +68,19 @@ public class BlogService {
 
 	public void insertPost(PostVo vo) {
 		blogRepository.insertPost(vo);
+	}
+
+	public void insertCategory(CategoryVo categoryVo) {
+		blogRepository.insertCategory(categoryVo);
+	}
+
+	public int getCountPostsByCategoryNo(int no) {
+		return blogRepository.getCountPostsByCategoryNo(no);
+	}
+
+	@Transactional
+	public void deleteCategory(int no) {
+		blogRepository.deletePosts(no);
+		blogRepository.deleteCategory(no);
 	} 
 }

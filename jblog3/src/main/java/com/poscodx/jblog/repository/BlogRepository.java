@@ -55,4 +55,20 @@ public class BlogRepository {
 		return sqlSession.insert("post.insertPost",vo);
 		
 	}
+
+	public int insertCategory(CategoryVo categoryVo) {
+		return sqlSession.insert("category.insertCategory",categoryVo);
+	}
+
+	public int getCountPostsByCategoryNo(int no) {
+		return sqlSession.selectOne("post.getCountPostsByCategoryNo",no);
+	}
+
+	public int deletePosts(int no) {
+		return sqlSession.delete("post.deletePosts",no);
+	}
+
+	public int deleteCategory(int no) {
+		return sqlSession.delete("category.deleteCategory",no);
+	}
 }

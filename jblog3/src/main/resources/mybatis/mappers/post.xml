@@ -4,4 +4,16 @@
 	<insert id='insertPost' parameterType='postvo'>
 		insert into post values(null,#{title},#{contents},curdate(),#{categoryNo})
 	</insert>
+	
+	<select id='getCountPostsByCategoryNo' parameterType='integer' resultType='integer'>
+		<![CDATA[
+			select count(*) from post where category_no=#{categoryNo}
+		]]>
+	</select>
+	
+	<delete id='deletePosts' parameterType='integer'>
+		<![CDATA[
+			delete from post where category_no=#{no};
+		]]>
+	</delete>
 </mapper>

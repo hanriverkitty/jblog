@@ -17,7 +17,7 @@
 	
 	<select id='getCategory' parameterType='string' resultType='categoryvo'>
 		<![CDATA[
-			select no, name, description, date_format(reg_date, '%Y/%m/%d') as regDate, id from category where id = #{id}
+			select no, name, description, date_format(reg_date, '%Y/%m/%d') as regDate, id from category where id = #{id} order by no
 		]]>
 	</select>
 	

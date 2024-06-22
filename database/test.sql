@@ -8,6 +8,11 @@ select a.no,a.title,a.contents,a.reg_date,a.category_no from post a, category b 
 select a.no,a.title,a.contents,a.reg_date,a.category_no from post a, category b where b.id = "hi" and b.no = a.category_no and b.no= 1 and a.no != 6 order by no desc;
 select b.no,b.title,b.contents,b.reg_date,b.category_no from category a, post b where a.no = b.category_no and a.id="hi" and a.no = 5 order by b.no desc;
 
+select  a.name, count(b.no) as count
+from category a
+left join post b on a.no=b.category_no
+where a.id = "hi" group by a.no order by a.no;
+
 -- blog --
 alter table blog change log logo varchar(200);
 insert into blog values("hi","spring 이야기", "이미지경로");
@@ -18,13 +23,14 @@ update blog set title="하위", logo="이미지경로" where id="123";
 
 -- category --
 insert into category values(null,"4","1",current_date(),"hi");
-select * from category where id = "hi" order by no desc;
+select * from category where id = "hi" order by no;
 desc category;
 select * from category;
 
 -- post --
+select count(*) from post where category_no=1;
 select * from post;
-select * from post where category_no=4;
+select * from post where category_no=5;
 desc post;
 alter table post modify no int not null auto_increment;
 insert into post values(null,"타이틀4","글4",curdate(),5);
