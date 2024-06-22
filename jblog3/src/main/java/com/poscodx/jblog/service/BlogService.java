@@ -64,5 +64,9 @@ public class BlogService {
 
 	public void changeBlogVo(BlogVo blogVo) {
 		blogRepository.changeBlogVo(blogVo);
+	}
+
+	public void insertPost(PostVo vo) {
+		blogRepository.insertPost(vo);
 	} 
 }

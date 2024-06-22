@@ -50,4 +50,9 @@ public class BlogRepository {
 	public int changeBlogVo(BlogVo blogVo) {
 		return sqlSession.update("blog.changeBlogVo",blogVo);
 	}
+
+	public int insertPost(PostVo vo) {
+		return sqlSession.insert("post.insertPost",vo);
+		
+	}
 }

@@ -21,7 +21,7 @@
 					<li><a href="${pageContext.request.contextPath}/user/logout">로그아웃</a></li>
 				</c:if>
 				<c:if test = "${authUser.id == id }">
-				<li><a href="">블로그 관리</a></li>
+				<li><a href="${pageContext.request.contextPath}/${id}/admin/basic">블로그 관리</a></li>
 				</c:if>
 			</ul>
 		</div>
@@ -35,7 +35,7 @@
 					</div>
 					<ul class="blog-list">
 						<c:forEach var="post" items='${postList }' varStatus='status' begin="1">
-							<li><a href="">${post.title }</a> <span>${post.regDate}</span>	</li>
+							<li><a href="${pageContext.request.contextPath}/${id }/${post.categoryNo}/${post.no}">${post.title }</a> <span>${post.regDate}</span>	</li>
 						</c:forEach>
 					</ul>
 			</div>

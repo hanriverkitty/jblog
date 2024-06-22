@@ -108,6 +108,7 @@ public class BlogController {
 		return "blog/admin-basic";
 	}
 	
+	
 	@RequestMapping(value="/admin/basic", method=RequestMethod.POST)
 	public String adminBasic(@PathVariable("id")String id, BlogVo blogVo, MultipartFile file) {
 		System.out.println("ADMIN 업데이트");
@@ -125,8 +126,16 @@ public class BlogController {
 		return "blog/admin-category";
 	}
 	// @Auth
-	@RequestMapping("/admin/write")
-	public String adminWrite(@PathVariable("id")String id) {
+	@RequestMapping(value="/admin/write", method=RequestMethod.GET)
+	public String adminWrite(@PathVariable("id")String id, Model model) {
+		List<CategoryVo> categoryList = blogService.getCategory(id);
+		model.addAttribute("categoryList",categoryList);
 		return "blog/admin-write";
+	}
+	@RequestMapping(value="/admin/write", method=RequestMethod.POST)
+	public String adminWrite(@PathVariable("id")String id, PostVo vo) {
+		System.out.println(vo);
+		blogService.insertPost(vo);
+		return "redirect:/"+id+"/"+vo.getCategoryNo()+"/"+vo.getNo();
 	}
 }
