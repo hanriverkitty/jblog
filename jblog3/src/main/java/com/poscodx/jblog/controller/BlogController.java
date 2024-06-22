@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.poscodx.jblog.security.Auth;
+import com.poscodx.jblog.security.AuthUser;
 import com.poscodx.jblog.service.BlogService;
 import com.poscodx.jblog.service.FileUploadService;
 import com.poscodx.jblog.service.UserService;
@@ -107,17 +109,24 @@ public class BlogController {
 		return "blog/main";
 	}
 	
-	// @Auth
+	@Auth
 	@RequestMapping(value="/admin/basic", method=RequestMethod.GET)
-	public String adminBasic(@PathVariable("id")String id, Model model) {
+	public String adminBasic(@PathVariable("id")String id, Model model, @AuthUser UserVo authUser) {
+		System.out.println("authUser::::::::"+authUser);
+		if(!id.equals(authUser.getId())) {
+			return "redirect:/"+id;
+		}
 		BlogVo blogVo = blogService.getBlogVo(id);
 		model.addAttribute(blogVo);
 		return "blog/admin-basic";
 	}
 	
-	
+	@Auth
 	@RequestMapping(value="/admin/basic", method=RequestMethod.POST)
-	public String adminBasic(@PathVariable("id")String id, BlogVo blogVo, MultipartFile file) {
+	public String adminBasic(@PathVariable("id")String id, BlogVo blogVo, MultipartFile file, @AuthUser UserVo authUser) {
+		if(!id.equals(authUser.getId())) {
+			return "redirect:/"+id;
+		}
 		System.out.println("ADMIN 업데이트");
 		String profile = fileUploadService.restore(file);
 		if(profile != null) {
@@ -127,9 +136,12 @@ public class BlogController {
 		return "redirect:/"+id;
 	}
 	
-	// @Auth
+	@Auth
 	@RequestMapping(value="/admin/category",method=RequestMethod.GET)
-	public String adminCategory(@PathVariable("id")String id,Model model) {
+	public String adminCategory(@PathVariable("id")String id,Model model, @AuthUser UserVo authUser) {
+		if(!id.equals(authUser.getId())) {
+			return "redirect:/"+id;
+		}
 		List<CategoryVo> categoryList = blogService.getCategory(id);
 		List<Integer> countPostList = new ArrayList<>();
 		
@@ -145,31 +157,45 @@ public class BlogController {
 		return "blog/admin-category";
 	}
 	
-	// @Auth
+	@Auth
 	@RequestMapping(value="/admin/category",method=RequestMethod.POST)
-	public String adminCategory(@PathVariable("id")String id, CategoryVo categoryVo) {
+	public String adminCategory(@PathVariable("id")String id, CategoryVo categoryVo, @AuthUser UserVo authUser) {
+		if(!id.equals(authUser.getId())) {
+			return "redirect:/"+id;
+		}
 		System.out.println(categoryVo);
 		blogService.insertCategory(categoryVo);
 		return "redirect:/"+id+"/admin/category";
 	}
 	
+	@Auth
 	@RequestMapping("/admin/category/delete")
-	public String deleteCategory(@PathVariable("id")String id, @RequestParam(value="categoryNo") int no) {
+	public String deleteCategory(@PathVariable("id")String id, @RequestParam(value="categoryNo") int no, @AuthUser UserVo authUser) {
+		if(!id.equals(authUser.getId())) {
+			return "redirect:/"+id;
+		}
 		System.out.println("categoryNo::::"+no+"삭제");
 		blogService.deleteCategory(no);
 		return "redirect:/"+id+"/admin/category";
 	}
 		
-	// @Auth
+	@Auth
 	@RequestMapping(value="/admin/write", method=RequestMethod.GET)
-	public String adminWrite(@PathVariable("id")String id, Model model) {
+	public String adminWrite(@PathVariable("id")String id, Model model, @AuthUser UserVo authUser) {
+		if(!id.equals(authUser.getId())) {
+			return "redirect:/"+id;
+		}
 		List<CategoryVo> categoryList = blogService.getCategory(id);
 		model.addAttribute("categoryList",categoryList);
 		return "blog/admin-write";
 	}
 	
+	@Auth
 	@RequestMapping(value="/admin/write", method=RequestMethod.POST)
-	public String adminWrite(@PathVariable("id")String id, PostVo vo) {
+	public String adminWrite(@PathVariable("id")String id, PostVo vo, @AuthUser UserVo authUser) {
+		if(!id.equals(authUser.getId())) {
+			return "redirect:/"+id;
+		}
 		System.out.println(vo);
 		blogService.insertPost(vo);
 		return "redirect:/"+id+"/"+vo.getCategoryNo()+"/"+vo.getNo();

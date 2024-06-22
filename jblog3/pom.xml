@@ -134,8 +134,7 @@
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
-		</dependency>
-		
+		</dependency>	
 	</dependencies>
 	<build>
 		<finalName>jblog3</finalName>
