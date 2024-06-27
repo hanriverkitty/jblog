@@ -151,7 +151,8 @@ public class BlogController {
 			countPostList.add(count);
 			System.out.println("categoryId::::"+vo.getNo()+"  "+"count::::::::::"+count);
 		}
-		
+		BlogVo blogVo = blogService.getBlogVo(id);
+		model.addAttribute(blogVo);
 		model.addAttribute("categoryList",categoryList);
 		model.addAttribute("countPostList",countPostList);
 		return "blog/admin-category";
@@ -182,6 +183,8 @@ public class BlogController {
 	@Auth
 	@RequestMapping(value="/admin/write", method=RequestMethod.GET)
 	public String adminWrite(@PathVariable("id")String id, Model model, @AuthUser UserVo authUser) {
+		BlogVo blogVo = blogService.getBlogVo(id);
+		model.addAttribute(blogVo);
 		if(!id.equals(authUser.getId())) {
 			return "redirect:/"+id;
 		}

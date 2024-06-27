@@ -21,7 +21,9 @@ public class UserRepository {
 	}
 
 	public UserVo getUser(String id, String password) {
-		return sqlSession.selectOne("user.getUser",Map.of("id",id,"password",password));
+		UserVo vo = sqlSession.selectOne("user.getUser",Map.of("id",id,"password",password));
+		System.out.println(vo);
+		return vo;
 	}
 	
 	public UserVo getUser(String id) {

@@ -18,7 +18,7 @@ import com.poscodx.jblog.config.web.SecurityConfig;
 @Configuration
 @EnableAspectJAutoProxy
 @Import({MvcConfig.class,LocaleConfig.class,SecurityConfig.class,FileUploadConfig.class})
-@ComponentScan({"com.poscodx.mysite.controller","com.poscodx.mysite.exception"})
+@ComponentScan({"com.poscodx.jblog.controller","com.poscodx.jblog.exception"})
 public class WebConfig implements WebMvcConfigurer{
 	
 

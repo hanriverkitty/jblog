@@ -22,7 +22,7 @@ $(function() {
 			return;
 		}
 		$.ajax({
-			url:"/jblog3/user/api/checkid?id="+id,
+			url:"/jblog4/user/api/checkid?id="+id,
 			type:"get",
 			dataType:"json",
 			error:function(xhr,status,error){

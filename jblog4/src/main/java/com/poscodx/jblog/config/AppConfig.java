@@ -12,7 +12,7 @@ import com.poscodx.jblog.config.app.MyBatisConfig;
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@ComponentScan({"com.poscodx.mysite.service", "com.poscodx.mysite.repository", "com.poscodx.mysite.aspect"})
+@ComponentScan({"com.poscodx.jblog.service", "com.poscodx.jblog.repository"})
 @Import({DBConfig.class, MyBatisConfig.class})
 public class AppConfig {
 }
