@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<insert id='insert' parameterType='uservo'>
+	 	<![CDATA[
+	 		insert into user values(#{id},#{name},password(#{password}),curdate());
+	 	]]>
+	</insert>
+	
+	<select id='getUser' parameterType='map' resultType='uservo'>
+		<![CDATA[
+			select * from user where id=#{id} and password=password(#{password})
+		]]>
+	</select>
+	
+	<select id='getUserById' parameterType='string' resultType='uservo'>
+		<![CDATA[
+			select * from user where id=#{id}
+		]]>
+	</select>
+	
+	<insert id='makeBlog' parameterType='string'>
+		<![CDATA[
+			insert into blog values(#{id},"spring 이야기", "/assets/upload-images/spring-logo.jpg");
+		]]>
+	</insert>
+	
+	<insert id='setUpCategory' parameterType='categoryvo'>
+		<![CDATA[
+			insert into category values(null,"미분류","초기 미분류 카테고리입니다",current_date(),#{id})
+		]]>
+		<selectKey keyProperty="no" resultType="integer" order="AFTER">
+			<![CDATA[
+				select last_insert_id() from dual
+			]]>
+		</selectKey>
+	</insert>
+	
+	<insert id='setUpPost' parameterType='integer'>
+		<![CDATA[
+			insert into post values(null,"환영합니다","블로그 생성을 진심으로 축하드립니다",curdate(),#{categoryNo})
+		]]>
+	</insert>
+	
+</mapper>
