@@ -18,6 +18,7 @@
 		<org.springframework-version>5.3.36</org.springframework-version>
 		<jcloverslf4j.version>1.7.36</jcloverslf4j.version>
 		<logback.version>1.2.11</logback.version>
+		<org.springframework.security-version>5.8.8</org.springframework.security-version>
 	</properties>
 
 	<dependencies>
@@ -49,6 +50,27 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
+		<!-- spring security web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+
+		<!-- spring security config -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${org.springframework.security-version}</version>
+		</dependency>
+		
+		<!-- spring security tag library -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${org.springframework.security-version}</version>
+		</dependency>
+
 		<!-- Common DBCP -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -68,8 +90,7 @@
 			<artifactId>mybatis-spring</artifactId>
 			<version>2.0.7</version>
 		</dependency>
-
-
+		
 		<!-- mariaDB jdbc -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
