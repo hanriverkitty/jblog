@@ -2,10 +2,13 @@ package com.poscodx.jblog.repository;
 
 import java.util.Map;
 
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscodx.jblog.vo.CategoryVo;
 import com.poscodx.jblog.vo.UserVo;
 
@@ -41,5 +44,25 @@ public class UserRepository {
 	public void setUpPost(int categoryNo) {
 		sqlSession.insert("user.setUpPost",categoryNo);
 	}
+
+	public <R> R getUser(String id, Class<R> resultType) {
+		GetUserResultHandler<R> getUserResultHandler = new GetUserResultHandler<>(resultType);
+		sqlSession.select("user.getUserById",id,getUserResultHandler);
+		return getUserResultHandler.result;
+	}
 	
+	private class GetUserResultHandler<R> implements ResultHandler<Map<String,Object>>{
+		private R result;
+		private Class<R> resultType;
+		
+		GetUserResultHandler(Class<R> resultType){
+			this.resultType = resultType;
+		}
+
+		@Override
+		public void handleResult(ResultContext<? extends Map<String, Object>> resultContext) {
+			Map<String, Object> resultMap = resultContext.getResultObject();
+			result = new ObjectMapper().convertValue(resultMap,resultType);
+		}
+	}	
 }

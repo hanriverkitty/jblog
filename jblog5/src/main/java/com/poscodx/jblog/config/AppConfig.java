@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.poscodx.jblog.config.app.DBConfig;
 import com.poscodx.jblog.config.app.MyBatisConfig;
-import com.poscodx.jblog.config.web.SecurityConfig;
+import com.poscodx.jblog.config.app.SecurityConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
