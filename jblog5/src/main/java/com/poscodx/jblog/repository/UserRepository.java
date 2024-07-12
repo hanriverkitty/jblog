@@ -47,7 +47,7 @@ public class UserRepository {
 
 	public <R> R getUser(String id, Class<R> resultType) {
 		GetUserResultHandler<R> getUserResultHandler = new GetUserResultHandler<>(resultType);
-		sqlSession.select("user.getUserById",id,getUserResultHandler);
+		sqlSession.select("user.getUserByIdUsedInLogin",id,getUserResultHandler);
 		return getUserResultHandler.result;
 	}
 	

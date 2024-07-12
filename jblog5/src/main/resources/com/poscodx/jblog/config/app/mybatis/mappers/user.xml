@@ -3,7 +3,7 @@
 <mapper namespace="user">
 	<insert id='insert' parameterType='uservo'>
 	 	<![CDATA[
-	 		insert into user values(#{id},#{name},password(#{password}),curdate());
+	 		insert into user values(#{id},#{name},#{password},curdate());
 	 	]]>
 	</insert>
 	
@@ -15,7 +15,15 @@
 	
 	<select id='getUserById' parameterType='string' resultType='uservo'>
 		<![CDATA[
-			select * from user where id=#{id}
+			select id, name, password, join_date as joinDate from user where id=#{id}
+		]]>
+	</select>
+	
+	
+	<!-- 로그인에 쓸 데이터베이스 결과값은 map에 매핑되어야한다 -->
+	<select id='getUserByIdUsedInLogin' parameterType='string' resultType='map'>
+		<![CDATA[
+			select id, name, password, join_date as joinDate from user where id=#{id}
 		]]>
 	</select>
 	

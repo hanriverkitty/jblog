@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.poscodx.jblog.security.Auth;
-import com.poscodx.jblog.security.AuthUser;
 import com.poscodx.jblog.service.BlogService;
 import com.poscodx.jblog.service.FileUploadService;
 import com.poscodx.jblog.service.UserService;
@@ -42,10 +41,16 @@ public class BlogController {
 			@PathVariable("id") String id,
 			@PathVariable("pathNo1") Optional<Integer> pathNo1,
 			@PathVariable("pathNo2") Optional<Integer> pathNo2,
-			Model model
+			Model model,
+			Authentication authentication
 			){
 		int categoryNo = 0;
 		int postNo = 0;
+		UserVo authUser = null;
+		if(authentication!=null) {
+			authUser = (UserVo)authentication.getPrincipal();
+			model.addAttribute("authUser",authUser);
+		}
 		System.out.println("path::::::::"+pathNo1+"     "+pathNo2);
 		List<PostVo> postList = new ArrayList<PostVo>();
 		
@@ -109,9 +114,10 @@ public class BlogController {
 		return "blog/main";
 	}
 	
-	@Auth
+
 	@RequestMapping(value="/admin/basic", method=RequestMethod.GET)
-	public String adminBasic(@PathVariable("id")String id, Model model, @AuthUser UserVo authUser) {
+	public String adminBasic(@PathVariable("id")String id, Model model,Authentication authentication) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		System.out.println("authUser::::::::"+authUser);
 		if(!id.equals(authUser.getId())) {
 			return "redirect:/"+id;
@@ -121,9 +127,9 @@ public class BlogController {
 		return "blog/admin-basic";
 	}
 	
-	@Auth
 	@RequestMapping(value="/admin/basic", method=RequestMethod.POST)
-	public String adminBasic(@PathVariable("id")String id, BlogVo blogVo, MultipartFile file, @AuthUser UserVo authUser) {
+	public String adminBasic(@PathVariable("id")String id, BlogVo blogVo, MultipartFile file, Authentication authentication) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(!id.equals(authUser.getId())) {
 			return "redirect:/"+id;
 		}
@@ -136,9 +142,10 @@ public class BlogController {
 		return "redirect:/"+id;
 	}
 	
-	@Auth
+
 	@RequestMapping(value="/admin/category",method=RequestMethod.GET)
-	public String adminCategory(@PathVariable("id")String id,Model model, @AuthUser UserVo authUser) {
+	public String adminCategory(@PathVariable("id")String id,Model model, Authentication authentication) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(!id.equals(authUser.getId())) {
 			return "redirect:/"+id;
 		}
@@ -158,9 +165,10 @@ public class BlogController {
 		return "blog/admin-category";
 	}
 	
-	@Auth
+
 	@RequestMapping(value="/admin/category",method=RequestMethod.POST)
-	public String adminCategory(@PathVariable("id")String id, CategoryVo categoryVo, @AuthUser UserVo authUser) {
+	public String adminCategory(@PathVariable("id")String id, CategoryVo categoryVo, Authentication authentication) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(!id.equals(authUser.getId())) {
 			return "redirect:/"+id;
 		}
@@ -169,9 +177,9 @@ public class BlogController {
 		return "redirect:/"+id+"/admin/category";
 	}
 	
-	@Auth
 	@RequestMapping("/admin/category/delete")
-	public String deleteCategory(@PathVariable("id")String id, @RequestParam(value="categoryNo") int no, @AuthUser UserVo authUser) {
+	public String deleteCategory(@PathVariable("id")String id, @RequestParam(value="categoryNo") int no,Authentication authentication) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(!id.equals(authUser.getId())) {
 			return "redirect:/"+id;
 		}
@@ -180,9 +188,9 @@ public class BlogController {
 		return "redirect:/"+id+"/admin/category";
 	}
 		
-	@Auth
 	@RequestMapping(value="/admin/write", method=RequestMethod.GET)
-	public String adminWrite(@PathVariable("id")String id, Model model, @AuthUser UserVo authUser) {
+	public String adminWrite(@PathVariable("id")String id, Model model, Authentication authentication) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		BlogVo blogVo = blogService.getBlogVo(id);
 		model.addAttribute(blogVo);
 		if(!id.equals(authUser.getId())) {
@@ -193,9 +201,10 @@ public class BlogController {
 		return "blog/admin-write";
 	}
 	
-	@Auth
+
 	@RequestMapping(value="/admin/write", method=RequestMethod.POST)
-	public String adminWrite(@PathVariable("id")String id, PostVo vo, @AuthUser UserVo authUser) {
+	public String adminWrite(@PathVariable("id")String id, PostVo vo, Authentication authentication) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		if(!id.equals(authUser.getId())) {
 			return "redirect:/"+id;
 		}
